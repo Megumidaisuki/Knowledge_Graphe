@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.feidian.system.mapper.UserMapper">
+    <resultMap id="CourseMap" type="com.feidian.system.domain.Course">
+        <result column="course_name" property="courseName"/>
+        <result column="content" property="content"/>
+        <result column="summary" property="summary"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="thumbnail" property="thumbnail"/>
+        <result column="length" property="length"/>
+        <result column="is_top" property="isTop"/>
+        <result column="status" property="status"/>
+        <result column="view_count" property="viewCount"/>
+        <result column="is_comment" property="isComment"/>
+        <result column="likes" property="likes"/>
+        <result column="dislikes" property="dislikes"/>
+        <result column="collect_counts" property="collectCounts"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="points" property="points"/>
+        <result column="course_time" property="courseTime"/>
+        <result column="offline_classes" property="offlineClasses"/>
+        <result column="school" property="school"/>
+        <result column="teacher" property="teacher"/>
+        <result column="category_name" property="categoryName"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+    </resultMap>
+
+
+
+
+    <sql id="selectAll">
+        select id,
+               course_name,
+               content,
+               summary,
+               category_id,
+               thumbnail,
+               `length`,
+               is_top,
+               status,
+               view_count,
+               is_comment,
+               likes,
+               dislikes,
+               collect_counts,
+               create_by,
+               create_time,
+               update_by,
+               update_time,
+               del_flag,
+               points,
+               course_time,
+               offline_classes,
+               school,
+               teacher,
+               start_time,
+               end_time
+        from course
+    </sql>
+    <insert id="contactData">
+        insert into user_course (user_id,course_id) values (#{userId},#{id})
+    </insert>
+    <update id="addViewCounts">
+        update course set view_count = view_count + 1 where id = #{courseId}
+    </update>
+    <update id="addCounts">
+        update sys_user set course_counts = course_counts + 1 where user_id = #{userId}
+    </update>
+
+    <select id="selectCoursesList" resultMap = "CourseMap">
+        select a.id, a.course_name, a.school,a.thumbnail, b.category_name, a.teacher
+        from course a
+                 left join sys_category b on a.category_id = b.category_id
+        where a.course_name LIKE CONCAT('%', #{body}, '%')
+           or a.teacher LIKE CONCAT('%', #{body}, '%')
+           or b.category_name LIKE CONCAT('%', #{body}, '%');
+
+    </select>
+    <select id="selectCourseById" resultMap="CourseMap">
+        <include refid="selectAll"/>
+        where id = #{id};
+
+    </select>
+    <select id="selectAllCoursesList" resultMap="CourseMap">
+        select a.id, a.course_name, a.school,a.thumbnail, b.category_name, a.teacher
+        from course a
+                 left join sys_category b on a.category_id = b.category_id
+    </select>
+
+</mapper>

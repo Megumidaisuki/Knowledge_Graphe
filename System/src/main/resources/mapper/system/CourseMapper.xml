@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.feidian.system.mapper.CourseMapper">
+    
+    <resultMap type="Course" id="CourseResult">
+        <result property="id"    column="id"    />
+        <result property="courseName"    column="course_name"    />
+        <result property="content"    column="content"    />
+        <result property="summary"    column="summary"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="thumbnail"    column="thumbnail"    />
+        <result property="length"    column="length"    />
+        <result property="isTop"    column="is_top"    />
+        <result property="status"    column="status"    />
+        <result property="viewCount"    column="view_count"    />
+        <result property="isComment"    column="is_comment"    />
+        <result property="likes"    column="likes"    />
+        <result property="dislikes"    column="dislikes"    />
+        <result property="collectCounts"    column="collect_counts"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="points"    column="points"    />
+        <result property="courseTime"    column="course_time"    />
+        <result property="offlineClasses"    column="offline_classes"    />
+        <result property="school"    column="school"    />
+        <result property="teacher"    column="teacher"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+    </resultMap>
+
+    <resultMap id="CategoryMap" type="SysCategory">
+        <result property="categoryId" column="category_id"/>
+        <result property="categoryName" column="category_name"/>
+    </resultMap>
+    <sql id="selectCourseVo">
+        select id, course_name, content, summary, category_id, thumbnail, length, is_top, status, view_count, is_comment, likes, dislikes, collect_counts, create_by, create_time, update_by, update_time, del_flag, points, course_time, offline_classes, school, teacher, start_time, end_time from course
+    </sql>
+
+    <select id="selectCourseList" parameterType="Course" resultMap="CourseResult">
+        <include refid="selectCourseVo"/>
+        <where>  
+            <if test="courseName != null  and courseName != ''"> and course_name like concat('%', #{courseName}, '%')</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="summary != null  and summary != ''"> and summary = #{summary}</if>
+            <if test="thumbnail != null  and thumbnail != ''"> and thumbnail = #{thumbnail}</if>
+            <if test="length != null  and length != ''"> and length = #{length}</if>
+            <if test="isTop != null  and isTop != ''"> and is_top = #{isTop}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="viewCount != null "> and view_count = #{viewCount}</if>
+            <if test="isComment != null  and isComment != ''"> and is_comment = #{isComment}</if>
+            <if test="likes != null "> and likes = #{likes}</if>
+            <if test="dislikes != null "> and dislikes = #{dislikes}</if>
+            <if test="collectCounts != null "> and collect_counts = #{collectCounts}</if>
+            <if test="points != null  and points != ''"> and points = #{points}</if>
+            <if test="courseTime != null  and courseTime != ''"> and course_time = #{courseTime}</if>
+            <if test="offlineClasses != null "> and offline_classes = #{offlineClasses}</if>
+            <if test="school != null  and school != ''"> and school = #{school}</if>
+            <if test="teacher != null  and teacher != ''"> and teacher = #{teacher}</if>
+            <if test="startTime != null  and startTime != ''"> and start_time = #{startTime}</if>
+            <if test="endTime != null  and endTime != ''"> and end_time = #{endTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectCourseById" parameterType="Long" resultMap="CourseResult">
+        <include refid="selectCourseVo"/>
+        where id = #{id}
+    </select>
+    <select id="getCategoryNameById" resultType="java.lang.String">
+        select category_name from sys_category where category_id = #{categoryId}
+    </select>
+    <select id="getCategoryIdByName" resultType="java.lang.Long">
+        select category_id from sys_category where category_name = #{categoryName}
+    </select>
+    <select id="selectCategory" resultMap="CategoryMap">
+        select category_id,category_name from sys_category
+    </select>
+
+    <insert id="insertCourse" parameterType="Course" useGeneratedKeys="true" keyProperty="id">
+        insert into course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseName != null">course_name,</if>
+            <if test="content != null">content,</if>
+            <if test="summary != null">summary,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="thumbnail != null">thumbnail,</if>
+            <if test="length != null">length,</if>
+            <if test="isTop != null">is_top,</if>
+            <if test="status != null">status,</if>
+            <if test="viewCount != null">view_count,</if>
+            <if test="isComment != null">is_comment,</if>
+            <if test="likes != null">likes,</if>
+            <if test="dislikes != null">dislikes,</if>
+            <if test="collectCounts != null">collect_counts,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="points != null">points,</if>
+            <if test="courseTime != null">course_time,</if>
+            <if test="offlineClasses != null">offline_classes,</if>
+            <if test="school != null">school,</if>
+            <if test="teacher != null">teacher,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="courseName != null">#{courseName},</if>
+            <if test="content != null">#{content},</if>
+            <if test="summary != null">#{summary},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="thumbnail != null">#{thumbnail},</if>
+            <if test="length != null">#{length},</if>
+            <if test="isTop != null">#{isTop},</if>
+            <if test="status != null">#{status},</if>
+            <if test="viewCount != null">#{viewCount},</if>
+            <if test="isComment != null">#{isComment},</if>
+            <if test="likes != null">#{likes},</if>
+            <if test="dislikes != null">#{dislikes},</if>
+            <if test="collectCounts != null">#{collectCounts},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="points != null">#{points},</if>
+            <if test="courseTime != null">#{courseTime},</if>
+            <if test="offlineClasses != null">#{offlineClasses},</if>
+            <if test="school != null">#{school},</if>
+            <if test="teacher != null">#{teacher},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+         </trim>
+    </insert>
+    <update id="addCounts">
+        update course set view_count = view_count + 1 where id = #{id}
+    </update>
+
+    <update id="updateCourse" parameterType="Course">
+        update course
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="courseName != null">course_name = #{courseName},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="summary != null">summary = #{summary},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="thumbnail != null">thumbnail = #{thumbnail},</if>
+            <if test="length != null">length = #{length},</if>
+            <if test="isTop != null">is_top = #{isTop},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="viewCount != null">view_count = #{viewCount},</if>
+            <if test="isComment != null">is_comment = #{isComment},</if>
+            <if test="likes != null">likes = #{likes},</if>
+            <if test="dislikes != null">dislikes = #{dislikes},</if>
+            <if test="collectCounts != null">collect_counts = #{collectCounts},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="points != null">points = #{points},</if>
+            <if test="courseTime != null">course_time = #{courseTime},</if>
+            <if test="offlineClasses != null">offline_classes = #{offlineClasses},</if>
+            <if test="school != null">school = #{school},</if>
+            <if test="teacher != null">teacher = #{teacher},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCourseById" parameterType="Long">
+        delete from course where id = #{id}
+    </delete>
+
+    <delete id="deleteCourseByIds" parameterType="String">
+        delete from course where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
