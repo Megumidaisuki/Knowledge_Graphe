@@ -1,5 +1,5 @@
 # 项目相关配置
-Knowledge_Graph:
+ruoyi:
   # 名称
   name: Knowledge_Graph
   # 版本

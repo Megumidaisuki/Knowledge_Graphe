@@ -16,9 +16,11 @@ public interface UserMapper {
 
     List<Course> selectAllCoursesList();
 
-    void addCounts(Long userId);
+    void addCounts(@Param("userId") Long userId);
 
-    void contactData(Long userId, Integer id);
+    void contactData(@Param("userId") Long userId, @Param("courseId") Integer courseId);
 
-    void addViewCounts(Long courseId);
+    void addViewCounts(@Param("courseId") Long courseId);
+
+    Integer selectExact(@Param("userId") Long userId, @Param("courseId") Integer courseId);
 }

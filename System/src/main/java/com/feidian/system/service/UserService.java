@@ -9,7 +9,7 @@ public interface UserService {
 
     AjaxResult getMessage();
 
-    AjaxResult selectCourse(Integer id);
+    AjaxResult selectCourse(Integer courseId);
 
     AjaxResult addCounts(Long courseId);
 }

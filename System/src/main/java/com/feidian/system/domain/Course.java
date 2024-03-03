@@ -105,7 +105,19 @@ public class Course extends BaseEntity
     @Excel(name = "结束时间")
     private String endTime;
 
-    public void setId(Long id) 
+    @Excel(name = "课程设计")
+    private String courseDesign;
+
+    public String getCourseDesign() {
+        return courseDesign;
+    }
+
+    public void setCourseDesign(String courseDesign) {
+        this.courseDesign = courseDesign;
+    }
+
+
+    public void setId(Long id)
     {
         this.id = id;
     }
@@ -341,6 +353,7 @@ public class Course extends BaseEntity
             .append("teacher", getTeacher())
             .append("startTime", getStartTime())
             .append("endTime", getEndTime())
+                .append("courseDesign",getCourseDesign())
             .toString();
     }
 }

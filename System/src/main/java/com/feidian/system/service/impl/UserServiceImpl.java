@@ -15,6 +15,7 @@ import com.feidian.system.service.UserService;
 import org.aspectj.weaver.loadtime.Aj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -74,19 +75,30 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 选课
-     * @param id
+     * @param courseId
      * @return
      */
+    @Transactional
     @Override
-    public AjaxResult selectCourse(Integer id) {
+    public AjaxResult selectCourse(Integer courseId) {
         Long userId = SecurityUtils.getUserId();
-        // 用户的选课数加一
-        userMapper.addCounts(userId);
-        // 用户课程关联表填入数据
-        userMapper.contactData(userId,id);
-        // 课程的选课数加一
-        courseMapper.addCounts(Long.valueOf(id));
-        return AjaxResult.success();
+
+
+
+        if(userMapper.selectExact(userId,courseId)==0){
+            // 用户的选课数加一
+            userMapper.addCounts(userId);
+            // 用户课程关联表填入数据
+            userMapper.contactData(userId,courseId);
+            // 课程的选课数加一
+            courseMapper.addCounts(Long.valueOf(courseId));
+
+            return AjaxResult.success();
+        }else {
+            return AjaxResult.error("已选课");
+        }
+
+
     }
     /**
      * 增加浏览量

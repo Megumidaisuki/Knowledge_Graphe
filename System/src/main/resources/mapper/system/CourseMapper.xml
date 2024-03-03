@@ -31,6 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="teacher"    column="teacher"    />
         <result property="startTime"    column="start_time"    />
         <result property="endTime"    column="end_time"    />
+        <result property="courseDesign" column="course_design"/>
     </resultMap>
 
     <resultMap id="CategoryMap" type="SysCategory">
@@ -38,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="categoryName" column="category_name"/>
     </resultMap>
     <sql id="selectCourseVo">
-        select id, course_name, content, summary, category_id, thumbnail, length, is_top, status, view_count, is_comment, likes, dislikes, collect_counts, create_by, create_time, update_by, update_time, del_flag, points, course_time, offline_classes, school, teacher, start_time, end_time from course
+        select id, course_name, content, summary, category_id, thumbnail, length, is_top, status, view_count, is_comment, likes, dislikes, collect_counts, create_by, create_time, update_by, update_time, del_flag, points, course_time, offline_classes, school, teacher, start_time, end_time,course_design from course
     </sql>
 
     <select id="selectCourseList" parameterType="Course" resultMap="CourseResult">
@@ -63,6 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="teacher != null  and teacher != ''"> and teacher = #{teacher}</if>
             <if test="startTime != null  and startTime != ''"> and start_time = #{startTime}</if>
             <if test="endTime != null  and endTime != ''"> and end_time = #{endTime}</if>
+            <if test="courseDesign != null  and courseDesign != ''"> and course_design = #{courseDesign}</if>
         </where>
     </select>
     
@@ -108,6 +110,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="teacher != null">teacher,</if>
             <if test="startTime != null">start_time,</if>
             <if test="endTime != null">end_time,</if>
+            <if test="courseDesign != null">course_design,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="courseName != null">#{courseName},</if>
@@ -135,10 +138,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="teacher != null">#{teacher},</if>
             <if test="startTime != null">#{startTime},</if>
             <if test="endTime != null">#{endTime},</if>
+            <if test="courseDesign != null">#{course_design},</if>
          </trim>
     </insert>
     <update id="addCounts">
-        update course set view_count = view_count + 1 where id = #{id}
+        update course set collect_counts = collect_counts + 1 where id = #{courseId}
     </update>
 
     <update id="updateCourse" parameterType="Course">
@@ -169,6 +173,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="teacher != null">teacher = #{teacher},</if>
             <if test="startTime != null">start_time = #{startTime},</if>
             <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="courseDesign != null"> and course_design = #{courseDesign}</if>
         </trim>
         where id = #{id}
     </update>

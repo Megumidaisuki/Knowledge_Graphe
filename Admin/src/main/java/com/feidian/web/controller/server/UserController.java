@@ -5,6 +5,7 @@ import com.feidian.common.core.controller.BaseController;
 import com.feidian.common.core.domain.AjaxResult;
 
 import com.feidian.system.service.UserService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,8 +49,8 @@ public class UserController extends BaseController {
      * @param courseId
      * @return
      */
-    @PostMapping("/selectCourse")
-    public AjaxResult selectCourse(Integer courseId){
+    @PostMapping("/selectCourse/{courseId}")
+    public AjaxResult selectCourse(@PathVariable Integer courseId){
         return userService.selectCourse(courseId);
     }
 
@@ -58,8 +59,8 @@ public class UserController extends BaseController {
      * @param courseId
      * @return
      */
-    @PostMapping("/addViewCounts")
-    public AjaxResult addViewCounts(Long courseId){
+    @PostMapping("/addViewCounts/{courseId}")
+    public AjaxResult addViewCounts(@PathVariable Long courseId){
 
         return userService.addCounts(courseId);
     }

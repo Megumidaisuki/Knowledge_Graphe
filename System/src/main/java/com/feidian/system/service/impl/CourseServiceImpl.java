@@ -1,9 +1,11 @@
 package com.feidian.system.service.impl;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import com.feidian.common.core.domain.AjaxResult;
 import com.feidian.common.utils.DateUtils;
+import com.feidian.common.utils.sign.Base64;
 import com.feidian.system.domain.SysCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,6 +65,10 @@ public class CourseServiceImpl implements ICourseService
     @Override
     public int insertCourse(Course course)
     {
+        String courseDesign = course.getCourseDesign();
+        //解码
+        byte[] decode = Base64.decode(courseDesign);
+        course.setCourseDesign(new String(decode, StandardCharsets.UTF_8));
         course.setCreateTime(DateUtils.getNowDate());
         course.setCategoryId(courseMapper.getCategoryIdByName(course.getCategoryName()));
         return courseMapper.insertCourse(course);

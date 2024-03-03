@@ -28,6 +28,7 @@
         <result column="category_name" property="categoryName"/>
         <result column="start_time" property="startTime"/>
         <result column="end_time" property="endTime"/>
+        <result column="course_design" property="courseDesign"/>
     </resultMap>
 
 
@@ -59,11 +60,14 @@
                school,
                teacher,
                start_time,
-               end_time
+               end_time,
+               course_design
         from course
     </sql>
     <insert id="contactData">
-        insert into user_course (user_id,course_id) values (#{userId},#{id})
+
+        INSERT INTO user_course (user_id, course_id) values (#{userId}, #{courseId});
+
     </insert>
     <update id="addViewCounts">
         update course set view_count = view_count + 1 where id = #{courseId}
@@ -90,6 +94,9 @@
         select a.id, a.course_name, a.school,a.thumbnail, b.category_name, a.teacher
         from course a
                  left join sys_category b on a.category_id = b.category_id
+    </select>
+    <select id="selectExact" resultType="java.lang.Integer">
+        select COUNT(1) from user_course where user_id = #{userId} and course_id = #{courseId};
     </select>
 
 </mapper>

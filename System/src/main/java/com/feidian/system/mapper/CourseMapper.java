@@ -4,6 +4,7 @@ import java.util.List;
 import com.feidian.system.domain.Course;
 import com.feidian.system.domain.SysCategory;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 课程Mapper接口
@@ -62,7 +63,7 @@ public interface CourseMapper
      */
     public int deleteCourseByIds(Long[] ids);
 
-    void addCounts(Long id);
+    void addCounts(@Param("courseId") Long courseId);
 
     String getCategoryNameById(Long categoryId);
 
